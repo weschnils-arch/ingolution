@@ -143,11 +143,7 @@ vec3 getColor(vec2 p){
     p.x += extra;
   }
   float middle = digit(p);
-  const float off = 0.002;
-  float sum = digit(p + vec2(-off, -off)) + digit(p + vec2(0.0, -off)) + digit(p + vec2(off, -off)) +
-              digit(p + vec2(-off, 0.0)) + digit(p + vec2(0.0, 0.0)) + digit(p + vec2(off, 0.0)) +
-              digit(p + vec2(-off, off)) + digit(p + vec2(0.0, off)) + digit(p + vec2(off, off));
-  vec3 baseColor = vec3(0.9) * middle + sum * 0.1 * vec3(1.0) * bar;
+  vec3 baseColor = vec3(middle) * bar;
   return baseColor;
 }
 
@@ -263,7 +259,7 @@ export default function FaultyTerminal({
       const { Renderer, Program, Mesh, Color, Triangle } = await import('ogl')
       oglLib = { Renderer, Program, Mesh, Color, Triangle }
 
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
       const renderer = new Renderer({ dpr })
       rendererRef.current = renderer
       const gl = renderer.gl
