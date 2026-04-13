@@ -68,11 +68,10 @@ export default function Hero({ onTriggerDataLoss }: HeroProps) {
           Datensicherung &middot; Backup-Loesungen &middot; B2B
         </p>
 
-        <h1 className="text-white leading-[0.95] tracking-[-0.03em] mb-8 uppercase"
-            style={{ fontSize: 'clamp(40px, 7vw, 100px)', fontFamily: 'var(--font-hero)', fontWeight: 900 }}>
-          Das passiert, wenn Ihre
-          <br />
-          <span className="text-[var(--color-green-light)]">Daten verloren gehen.</span>
+        <h1 className="text-white leading-[0.95] tracking-[-0.03em] mb-8 uppercase whitespace-nowrap"
+            style={{ fontSize: 'clamp(28px, 5.2vw, 80px)', fontFamily: 'var(--font-hero)', fontWeight: 900 }}>
+          <span className="block">Das passiert, wenn Ihre</span>
+          <span className="block text-[var(--color-green-light)]">Daten verloren gehen.</span>
         </h1>
 
         <p className="text-white/60 text-lg max-w-xl mx-auto mb-10 font-sans leading-relaxed">
