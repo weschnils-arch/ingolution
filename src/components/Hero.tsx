@@ -1,11 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import FaultyTerminal from './FaultyTerminal'
 
-interface HeroProps {
-  onTriggerDataLoss?: () => void
-}
-
-export default function Hero({ onTriggerDataLoss }: HeroProps) {
+export default function Hero() {
   const textRef = useRef<HTMLDivElement>(null)
   const [glitching, setGlitching] = useState(false)
 

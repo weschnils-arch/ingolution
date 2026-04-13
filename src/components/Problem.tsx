@@ -4,9 +4,39 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
+/* SF Symbol-style SVG icons */
+const LockShieldIcon = () => (
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2L3.5 6.5V11c0 5.25 3.625 10.15 8.5 11.5 4.875-1.35 8.5-6.25 8.5-11.5V6.5L12 2z" />
+    <rect x="9" y="10" width="6" height="5" rx="1" />
+    <path d="M10 10V8a2 2 0 0 1 4 0v2" />
+  </svg>
+)
+
+const ServerCrashIcon = () => (
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="3" width="20" height="7" rx="2" />
+    <circle cx="6" cy="6.5" r="1" fill="currentColor" />
+    <line x1="10" y1="6.5" x2="18" y2="6.5" />
+    <rect x="2" y="14" width="20" height="7" rx="2" />
+    <circle cx="6" cy="17.5" r="1" fill="currentColor" />
+    <line x1="10" y1="17.5" x2="18" y2="17.5" />
+    <path d="M21 2l-3 3m0-3l3 3" strokeWidth="2" />
+  </svg>
+)
+
+const PersonWarningIcon = () => (
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="10" cy="7" r="3.5" />
+    <path d="M3 21v-2a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v2" />
+    <path d="M20 6v3" />
+    <circle cx="20" cy="11" r="0.5" fill="currentColor" />
+  </svg>
+)
+
 const scenarios = [
   {
-    icon: '\u{1F512}',
+    icon: <LockShieldIcon />,
     title: 'Ransomware-Angriff',
     description:
       'Ihre gesamten Unternehmensdaten werden verschluesselt. Kein Zugriff, kein Backup, keine Verhandlung -- nur Stillstand.',
@@ -14,7 +44,7 @@ const scenarios = [
     statLabel: 'aller KMU erholen sich nie vollstaendig',
   },
   {
-    icon: '\u{1F4A5}',
+    icon: <ServerCrashIcon />,
     title: 'Hardware-Crash',
     description:
       'Festplatten sterben ohne Vorwarnung. Server-Ausfaelle kosten nicht nur Daten -- sie kosten Vertrauen und Umsatz.',
@@ -22,7 +52,7 @@ const scenarios = [
     statLabel: 'durchschnittlicher Schaden pro Stunde Ausfall',
   },
   {
-    icon: '\u{1FAE3}',
+    icon: <PersonWarningIcon />,
     title: 'Menschliches Versagen',
     description:
       'Ein falscher Klick, eine geloeschte Datei, ein ueberschriebenes Dokument -- Fehler passieren. Die Frage ist nur: Gibt es ein Backup?',
@@ -114,7 +144,7 @@ export default function Problem() {
               className="group relative bg-[var(--color-surface)] rounded-2xl p-8 border border-[var(--color-border)] hover:border-[var(--color-orange)]/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               {/* Icon */}
-              <div className="text-3xl mb-5">{scenario.icon}</div>
+              <div className="mb-5 text-[var(--color-text-muted)]">{scenario.icon}</div>
 
               {/* Title */}
               <h3 className="font-display font-700 text-xl text-[var(--color-text)] mb-3">
