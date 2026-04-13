@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Lenis from 'lenis'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -14,53 +14,9 @@ import Footer from './components/Footer'
 gsap.registerPlugin(ScrollTrigger)
 
 export default function App() {
-  const [dataLost, setDataLost] = useState(false)
-  const [showContent, setShowContent] = useState(false)
-  const overlayRef = useRef<HTMLDivElement>(null)
+  const [showContent] = useState(true)
   const contentRef = useRef<HTMLDivElement>(null)
   const lenisRef = useRef<Lenis | null>(null)
-
-  const triggerDataLoss = useCallback(() => {
-    if (dataLost) return
-    setDataLost(true)
-
-    const overlay = overlayRef.current
-    if (!overlay) return
-
-    gsap.fromTo(overlay,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        duration: 0.8,
-        delay: 0.6,
-        ease: 'power2.in',
-        onComplete: () => {
-          setShowContent(true)
-
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              ScrollTrigger.refresh()
-
-              gsap.to(overlay, {
-                opacity: 0,
-                duration: 1.2,
-                delay: 0.3,
-                ease: 'power2.out',
-                onComplete: () => {
-                  overlay.style.pointerEvents = 'none'
-
-                  const problemSection = document.getElementById('problem')
-                  if (problemSection && lenisRef.current) {
-                    lenisRef.current.scrollTo(problemSection, { duration: 1.5 })
-                  }
-                },
-              })
-            })
-          })
-        },
-      }
-    )
-  }, [dataLost])
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -88,13 +44,7 @@ export default function App() {
       <Cursor />
       <Nav />
 
-      <Hero onTriggerDataLoss={triggerDataLoss} />
-
-      <div
-        ref={overlayRef}
-        className="fixed inset-0 z-40 bg-black pointer-events-none"
-        style={{ opacity: 0 }}
-      />
+      <Hero />
 
       <div
         ref={contentRef}
