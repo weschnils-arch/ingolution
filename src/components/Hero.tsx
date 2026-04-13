@@ -2,13 +2,12 @@ import { useRef, useState, useEffect } from 'react'
 import FaultyTerminal from './FaultyTerminal'
 
 interface HeroProps {
-  onTriggerDataLoss: () => void
+  onTriggerDataLoss?: () => void
 }
 
 export default function Hero({ onTriggerDataLoss }: HeroProps) {
   const textRef = useRef<HTMLDivElement>(null)
   const [glitching, setGlitching] = useState(false)
-  const [btnText, setBtnText] = useState('Erleben Sie es selbst')
 
   useEffect(() => {
     const el = textRef.current
@@ -26,16 +25,44 @@ export default function Hero({ onTriggerDataLoss }: HeroProps) {
   const handleCTA = () => {
     if (glitching) return
     setGlitching(true)
-    setBtnText('Daten werden geloescht...')
 
-    onTriggerDataLoss()
+    // Phase 1: Hide all text, show only the FaultyTerminal background
+    const textEl = textRef.current
+    if (textEl) {
+      textEl.style.transition = 'opacity 0.3s ease'
+      textEl.style.opacity = '0'
+      textEl.style.pointerEvents = 'none'
+    }
 
+    // Phase 2: After 1s, fade the whole hero to black
+    setTimeout(() => {
+      const blackout = document.getElementById('hero-blackout')
+      if (blackout) {
+        blackout.style.transition = 'opacity 1s ease'
+        blackout.style.opacity = '1'
+      }
+    }, 1000)
+
+    // Phase 3: After 2s total, scroll down and reset
     setTimeout(() => {
       const el = document.getElementById('problem')
       if (el) el.scrollIntoView({ behavior: 'smooth' })
-      setGlitching(false)
-      setBtnText('Erleben Sie es selbst')
-    }, 3200)
+
+      // Reset after scroll
+      setTimeout(() => {
+        if (textEl) {
+          textEl.style.transition = 'opacity 0.8s ease'
+          textEl.style.opacity = '1'
+          textEl.style.pointerEvents = ''
+        }
+        const blackout = document.getElementById('hero-blackout')
+        if (blackout) {
+          blackout.style.transition = 'opacity 0.8s ease'
+          blackout.style.opacity = '0'
+        }
+        setGlitching(false)
+      }, 1200)
+    }, 2000)
   }
 
   return (
@@ -63,15 +90,18 @@ export default function Hero({ onTriggerDataLoss }: HeroProps) {
       <div className={`absolute inset-0 transition-opacity duration-500 ${glitching ? 'opacity-20' : 'opacity-50'}`}
            style={{ background: 'linear-gradient(135deg, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.3) 100%)' }} />
 
-      <div ref={textRef} className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+      {/* Blackout overlay for CTA effect */}
+      <div id="hero-blackout" className="absolute inset-0 z-[15] bg-black pointer-events-none" style={{ opacity: 0 }} />
+
+      <div ref={textRef} className="relative z-10 text-center px-6 max-w-7xl mx-auto">
         <p className="text-[var(--color-green-light)] font-display font-semibold text-sm tracking-[0.2em] uppercase mb-6">
           Datensicherung &middot; Backup-Loesungen &middot; B2B
         </p>
 
         <h1 className="text-white leading-[0.95] tracking-[-0.03em] mb-8 uppercase text-center w-full"
-            style={{ fontSize: 'clamp(28px, 5.2vw, 80px)', fontFamily: 'var(--font-hero)', fontWeight: 900 }}>
-          <span className="block">Das passiert, wenn Ihre</span>
-          <span className="block text-[var(--color-green-light)]">Daten verloren gehen.</span>
+            style={{ fontSize: 'clamp(26px, 4.5vw, 72px)', fontFamily: 'var(--font-hero)', fontWeight: 900 }}>
+          Das passiert, wenn Ihre{' '}
+          <span className="text-[var(--color-green-light)]">Daten verloren gehen.</span>
         </h1>
 
         <p className="text-white/60 text-lg max-w-xl mx-auto mb-10 font-sans leading-relaxed">
@@ -94,7 +124,7 @@ export default function Hero({ onTriggerDataLoss }: HeroProps) {
           {glitching && (
             <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           )}
-          {btnText}
+          Erleben Sie es selbst
         </button>
 
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
